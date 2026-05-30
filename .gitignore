@@ -1,0 +1,6 @@
+# Node.js dependencies
+node_modules/
+# Build output
+index.html
+# npm package lock file
+package-lock.json

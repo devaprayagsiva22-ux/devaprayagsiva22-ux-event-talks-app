@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Event Schedule</title>
+    <!-- Styles will be injected here by the build script -->
+    <style id="injected-styles"></style>
+</head>
+<body>
+    <header>
+        <h1>Tech Talks Event 2026</h1>
+        <p>A day full of insightful technical talks.</p>
+    </header>
+
+    <main>
+        <section class="schedule-filter">
+            <label for="category-search">Search by Category:</label>
+            <input type="text" id="category-search" placeholder="e.g., AI, WebDev, Security">
+        </section>
+
+        <section class="schedule">
+            <h2>Event Schedule</h2>
+            <div id="schedule-container">
+                <!-- Schedule items will be dynamically generated here -->
+            </div>
+        </section>
+
+        <section class="talk-details-overlay" id="talk-details-overlay">
+            <div class="talk-details-content">
+                <h3 id="detail-title"></h3>
+                <p class="detail-speakers" id="detail-speakers"></p>
+                <p class="detail-categories" id="detail-categories"></p>
+                <p id="detail-description"></p>
+                <button class="close-details" id="close-details">Close</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Tech Talks Event</p>
+    </footer>
+
+    <!-- Talk data and app script will be injected here by the build script -->
+    <script id="injected-talks-data"></script>
+    <script id="injected-app-script"></script>
+</body>
+</html>

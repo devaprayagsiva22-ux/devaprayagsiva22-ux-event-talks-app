@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Event Schedule</title>
+    <!-- Styles will be injected here by the build script -->
+    <style>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.schedule-filter {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.schedule-filter label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.schedule-filter input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+.schedule {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.schedule-item {
+    display: flex;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-left: 5px solid #007bff;
+    border-radius: 5px;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.schedule-item.break {
+    border-left: 5px solid #ffc107;
+    background-color: #fffaf0;
+}
+
+.schedule-item:hover {
+    background-color: #e9f5ff;
+}
+
+.schedule-item.break:hover {
+    background-color: #fff5e0;
+}
+
+
+.time-slot {
+    font-weight: bold;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+
+.talk-info {
+    flex-grow: 1;
+}
+
+.talk-info h3 {
+    margin-top: 0;
+    color: #0056b3;
+}
+
+.talk-info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.talk-info .categories span {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 5px;
+    font-size: 0.8em;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.8em;
+}
+
+/* Talk Details Overlay */
+.talk-details-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.talk-details-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.talk-details-content h3 {
+    color: #0056b3;
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.talk-details-content .detail-speakers,
+.talk-details-content .detail-categories {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.talk-details-content .detail-categories span {
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.talk-details-content p {
+    line-height: 1.6;
+}
+
+.close-details {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 20px;
+    float: right;
+}
+
+.close-details:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .schedule-item {
+        flex-direction: column;
+    }
+    .time-slot {
+        margin-bottom: 10px;
+    }
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Tech Talks Event 2026</h1>
+        <p>A day full of insightful technical talks.</p>
+    </header>
+
+    <main>
+        <section class="schedule-filter">
+            <label for="category-search">Search by Category:</label>
+            <input type="text" id="category-search" placeholder="e.g., AI, WebDev, Security">
+        </section>
+
+        <section class="schedule">
+            <h2>Event Schedule</h2>
+            <div id="schedule-container">
+                <!-- Schedule items will be dynamically generated here -->
+            </div>
+        </section>
+
+        <section class="talk-details-overlay" id="talk-details-overlay">
+            <div class="talk-details-content">
+                <h3 id="detail-title"></h3>
+                <p class="detail-speakers" id="detail-speakers"></p>
+                <p class="detail-categories" id="detail-categories"></p>
+                <p id="detail-description"></p>
+                <button class="close-details" id="close-details">Close</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Tech Talks Event</p>
+    </footer>
+
+    <!-- Talk data and app script will be injected here by the build script -->
+    <script>window.talksData = [
+  {
+    id: "talk-1",
+    title: "Introduction to AI in Cloud",
+    speakers: [
+      "Alice Smith"
+    ],
+    categories: [
+      "AI",
+      "Cloud",
+      "Beginner"
+    ],
+    duration: 60,
+    description: "A foundational talk on how Artificial Intelligence is being integrated into cloud platforms, suitable for beginners."
+  },
+  {
+    id: "talk-2",
+    title: "Advanced JavaScript Patterns",
+    speakers: [
+      "Bob Johnson"
+    ],
+    categories: [
+      "JavaScript",
+      "WebDev",
+      "Advanced"
+    ],
+    duration: 60,
+    description: "Dive deep into complex JavaScript patterns and best practices for building robust web applications."
+  },
+  {
+    id: "talk-3",
+    title: "DevOps with Kubernetes",
+    speakers: [
+      "Charlie Brown",
+      "Diana Prince"
+    ],
+    categories: [
+      "DevOps",
+      "Kubernetes",
+      "Cloud"
+    ],
+    duration: 60,
+    description: "Learn the essentials of deploying and managing applications using Kubernetes in a DevOps workflow."
+  },
+  {
+    id: "talk-4",
+    title: "User Experience Design Principles",
+    speakers: [
+      "Eve Adams"
+    ],
+    categories: [
+      "UX",
+      "Design",
+      "Beginner"
+    ],
+    duration: 60,
+    description: "An overview of fundamental UX design principles to create intuitive and engaging user interfaces."
+  },
+  {
+    id: "talk-5",
+    title: "Securing Your Node.js Applications",
+    speakers: [
+      "Frank White"
+    ],
+    categories: [
+      "Node.js",
+      "Security",
+      "Backend"
+    ],
+    duration: 60,
+    description: "Best practices and common pitfalls to avoid when securing your Node.js applications against cyber threats."
+  },
+  {
+    id: "talk-6",
+    title: "Data Science with Python",
+    speakers: [
+      "Grace Hopper"
+    ],
+    categories: [
+      "Python",
+      "Data Science",
+      "AI"
+    ],
+    duration: 60,
+    description: "An introduction to using Python for data analysis, machine learning, and data visualization."
+  }
+];</script>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+    // talksData is assumed to be globally available from the injected script
+    const talks = window.talksData;
+
+    const scheduleContainer = document.getElementById('schedule-container');
+    const categorySearchInput = document.getElementById('category-search');
+    const talkDetailsOverlay = document.getElementById('talk-details-overlay');
+    const detailTitle = document.getElementById('detail-title');
+    const detailSpeakers = document.getElementById('detail-speakers');
+    const detailCategories = document.getElementById('detail-categories');
+    const detailDescription = document.getElementById('detail-description');
+    const closeDetailsButton = document.getElementById('close-details');
+
+    const eventStartTime = new Date();
+    eventStartTime.setHours(10, 0, 0, 0); // Event starts at 10:00 AM
+
+    const transitionTime = 10; // 10 minutes between talks
+    const lunchBreakDuration = 60; // 1 hour lunch break
+
+    let currentTalks = talks;
+
+    function renderSchedule(filteredTalks = talks) {
+        scheduleContainer.innerHTML = ''; // Clear existing schedule
+
+        let currentTime = new Date(eventStartTime);
+        let talkIndex = 0;
+
+        for (let i = 0; i < 6; i++) { // There are 6 talks
+            const talk = filteredTalks[talkIndex];
+
+            // Render Talk
+            if (talk) {
+                const talkEndTime = new Date(currentTime.getTime() + talk.duration * 60 * 1000);
+                const talkElement = document.createElement('div');
+                talkElement.classList.add('schedule-item');
+                talkElement.dataset.talkId = talk.id;
+                talkElement.innerHTML = `
+                    <div class="time-slot">${formatTime(currentTime)} - ${formatTime(talkEndTime)}</div>
+                    <div class="talk-info">
+                        <h3>${talk.title}</h3>
+                        <p><strong>Speakers:</strong> ${talk.speakers.join(', ')}</p>
+                        <p class="categories">
+                            ${talk.categories.map(cat => `<span>${cat}</span>`).join('')}
+                        </p>
+                    </div>
+                `;
+                scheduleContainer.appendChild(talkElement);
+                talkElement.addEventListener('click', () => showTalkDetails(talk));
+
+                currentTime = new Date(talkEndTime.getTime() + transitionTime * 60 * 1000);
+                talkIndex++;
+            }
+
+            // Insert Lunch Break after the 3rd talk
+            if (i === 2) {
+                const lunchEndTime = new Date(currentTime.getTime() + lunchBreakDuration * 60 * 1000);
+                const lunchElement = document.createElement('div');
+                lunchElement.classList.add('schedule-item', 'break');
+                lunchElement.innerHTML = `
+                    <div class="time-slot">${formatTime(currentTime)} - ${formatTime(lunchEndTime)}</div>
+                    <div class="talk-info">
+                        <h3>Lunch Break</h3>
+                        <p>Enjoy your meal!</p>
+                    </div>
+                `;
+                scheduleContainer.appendChild(lunchElement);
+                currentTime = new Date(lunchEndTime.getTime() + transitionTime * 60 * 1000);
+            }
+        }
+    }
+
+    function formatTime(date) {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+
+    function showTalkDetails(talk) {
+        detailTitle.textContent = talk.title;
+        detailSpeakers.textContent = `Speakers: ${talk.speakers.join(', ')}`;
+        detailCategories.innerHTML = `Categories: ${talk.categories.map(cat => `<span>${cat}</span>`).join('')}`;
+        detailDescription.textContent = talk.description;
+        talkDetailsOverlay.style.display = 'flex';
+    }
+
+    function hideTalkDetails() {
+        talkDetailsOverlay.style.display = 'none';
+    }
+
+    categorySearchInput.addEventListener('input', (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        const filteredTalks = talks.filter(talk =>
+            talk.categories.some(category => category.toLowerCase().includes(searchTerm))
+        );
+        renderSchedule(filteredTalks);
+    });
+
+    closeDetailsButton.addEventListener('click', hideTalkDetails);
+    talkDetailsOverlay.addEventListener('click', (event) => {
+        if (event.target === talkDetailsOverlay) {
+            hideTalkDetails();
+        }
+    });
+
+    // Initial render
+    renderSchedule();
+});
+</script>
+</body>
+</html>
